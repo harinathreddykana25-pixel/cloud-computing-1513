@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Sheet Processing System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            margin: 0;
+        }
+
+        header {
+            background: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 25px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px #ccc;
+        }
+
+        h2 {
+            color: #1f4e79;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #1f4e79;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #163a5a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #1f4e79;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .result {
+            background: #eaf3ff;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .pass {
+            color: green;
+            font-weight: bold;
+        }
+
+        .fail {
+            color: red;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Mark Sheet Processing System</h1>
+    <p>Cloud-Based SaaS Application</p>
+</header>
+
+<div class="container">
+
+    <div class="box">
+
+        <h2>Student Information</h2>
+
+        <input type="text" id="studentName"
+               placeholder="Student Name">
+
+        <input type="text" id="regNo"
+               placeholder="Registration Number">
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Enter Subject Marks</h2>
+
+        <table>
+
+            <tr>
+                <th>Subject</th>
+                <th>Maximum Marks</th>
+                <th>Marks Obtained</th>
+            </tr>
+
+            <tr>
+                <td>Computer Science</td>
+                <td>100</td>
+                <td>
+                    <input type="number" id="sub1"
+                           min="0" max="100">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Mathematics</td>
+                <td>100</td>
+                <td>
+                    <input type="number" id="sub2"
+                           min="0" max="100">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Operating Systems</td>
+                <td>100</td>
+                <td>
+                    <input type="number" id="sub3"
+                           min="0" max="100">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Computer Networks</td>
+                <td>100</td>
+                <td>
+                    <input type="number" id="sub4"
+                           min="0" max="100">
+                </td>
+            </tr>
+
+            <tr>
+                <td>Database Management</td>
+                <td>100</td>
+                <td>
+                    <input type="number" id="sub5"
+                           min="0" max="100">
+                </td>
+            </tr>
+
+        </table>
+
+        <br>
+
+        <button onclick="calculateResult()">
+            Process Mark Sheet
+        </button>
+
+        <button onclick="clearData()">
+            Clear
+        </button>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Mark Sheet Result</h2>
+
+        <div id="result" class="result">
+
+            <p><b>Student Name:</b>
+                <span id="displayName">---</span>
+            </p>
+
+            <p><b>Registration Number:</b>
+                <span id="displayReg">---</span>
+            </p>
+
+            <p><b>Total Marks:</b>
+                <span id="total">---</span>
+            </p>
+
+            <p><b>Average:</b>
+                <span id="average">---</span>
+            </p>
+
+            <p><b>Percentage:</b>
+                <span id="percentage">---</span>
+            </p>
+
+            <p><b>Grade:</b>
+                <span id="grade">---</span>
+            </p>
+
+            <p><b>Rank:</b>
+                <span id="rank">---</span>
+            </p>
+
+            <p><b>Overall Performance:</b>
+                <span id="performance">---</span>
+            </p>
+
+            <p><b>Result:</b>
+                <span id="status">---</span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Student Mark Records</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Register No.</th>
+                    <th>Total</th>
+                    <th>Average</th>
+                    <th>Percentage</th>
+                    <th>Grade</th>
+                    <th>Rank</th>
+                    <th>Performance</th>
+                </tr>
+            </thead>
+
+            <tbody id="records">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<footer>
+    <p>Cloud Mark Sheet Processing System</p>
+</footer>
+
+
+<script>
+
+let studentRecords = [];
+
+
+function calculateResult() {
+
+    let name =
+        document.getElementById("studentName").value;
+
+    let reg =
+        document.getElementById("regNo").value;
+
+    let mark1 =
+        Number(document.getElementById("sub1").value);
+
+    let mark2 =
+        Number(document.getElementById("sub2").value);
+
+    let mark3 =
+        Number(document.getElementById("sub3").value);
+
+    let mark4 =
+        Number(document.getElementById("sub4").value);
+
+    let mark5 =
+        Number(document.getElementById("sub5").value);
+
+
+    if (name === "" || reg === "") {
+        alert("Please enter student name and registration number.");
+        return;
+    }
+
+
+    let marks = [
+        mark1,
+        mark2,
+        mark3,
+        mark4,
+        mark5
+    ];
+
+
+    if (marks.some(mark => mark < 0 || mark > 100)) {
+        alert("Marks must be between 0 and 100.");
+        return;
+    }
+
+
+    let total =
+        mark1 + mark2 + mark3 + mark4 + mark5;
+
+
+    let average =
+        total / 5;
+
+
+    let percentage =
+        (total / 500) * 100;
+
+
+    let grade;
+    let performance;
+
+
+    if (percentage >= 90) {
+        grade = "A+";
+        performance = "Excellent";
+    }
+    else if (percentage >= 80) {
+        grade = "A";
+        performance = "Very Good";
+    }
+    else if (percentage >= 70) {
+        grade = "B";
+        performance = "Good";
+    }
+    else if (percentage >= 60) {
+        grade = "C";
+        performance = "Average";
+    }
+    else if (percentage >= 50) {
+        grade = "D";
+        performance = "Satisfactory";
+    }
+    else {
+        grade = "F";
+        performance = "Poor";
+    }
+
+
+    let status;
+
+    if (marks.every(mark => mark >= 40)) {
+        status = "PASS";
+    }
+    else {
+        status = "FAIL";
+        performance = "Needs Improvement";
+    }
+
+
+    let student = {
+        name: name,
+        reg: reg,
+        total: total,
+        average: average,
+        percentage: percentage,
+        grade: grade,
+        performance: performance
+    };
+
+
+    studentRecords.push(student);
+
+
+    let rank =
+        calculateRank(studentRecords, student);
+
+
+    document.getElementById("displayName")
+        .innerText = name;
+
+    document.getElementById("displayReg")
+        .innerText = reg;
+
+    document.getElementById("total")
+        .innerText = total + " / 500";
+
+    document.getElementById("average")
+        .innerText = average.toFixed(2);
+
+    document.getElementById("percentage")
+        .innerText = percentage.toFixed(2) + "%";
+
+    document.getElementById("grade")
+        .innerText = grade;
+
+    document.getElementById("rank")
+        .innerText = rank;
+
+    document.getElementById("performance")
+        .innerText = performance;
+
+    document.getElementById("status")
+        .innerText = status;
+
+
+    if (status === "PASS") {
+        document.getElementById("status")
+            .className = "pass";
+    }
+    else {
+        document.getElementById("status")
+            .className = "fail";
+    }
+
+
+    displayRecords();
+}
+
+
+function calculateRank(records, currentStudent) {
+
+    let sorted =
+        [...records].sort(
+            (a, b) => b.total - a.total
+        );
+
+    return sorted.indexOf(currentStudent) + 1;
+}
+
+
+function displayRecords() {
+
+    let table =
+        document.getElementById("records");
+
+    table.innerHTML = "";
+
+
+    let sorted =
+        [...studentRecords].sort(
+            (a, b) => b.total - a.total
+        );
+
+
+    sorted.forEach((student, index) => {
+
+        let row =
+            table.insertRow();
+
+        row.insertCell(0).innerText =
+            student.name;
+
+        row.insertCell(1).innerText =
+            student.reg;
+
+        row.insertCell(2).innerText =
+            student.total;
+
+        row.insertCell(3).innerText =
+            student.average.toFixed(2);
+
+        row.insertCell(4).innerText =
+            student.percentage.toFixed(2) + "%";
+
+        row.insertCell(5).innerText =
+            student.grade;
+
+        row.insertCell(6).innerText =
+            index + 1;
+
+        row.insertCell(7).innerText =
+            student.performance;
+
+    });
+}
+
+
+function clearData() {
+
+    document.getElementById("studentName").value = "";
+
+    document.getElementById("regNo").value = "";
+
+    document.getElementById("sub1").value = "";
+
+    document.getElementById("sub2").value = "";
+
+    document.getElementById("sub3").value = "";
+
+    document.getElementById("sub4").value = "";
+
+    document.getElementById("sub5").value = "";
+
+    document.getElementById("displayName").innerText = "---";
+
+    document.getElementById("displayReg").innerText = "---";
+
+    document.getElementById("total").innerText = "---";
+
+    document.getElementById("average").innerText = "---";
+
+    document.getElementById("percentage").innerText = "---";
+
+    document.getElementById("grade").innerText = "---";
+
+    document.getElementById("rank").innerText = "---";
+
+    document.getElementById("performance").innerText = "---";
+
+    document.getElementById("status").innerText = "---";
+}
+
+</script>
+
+</body>
+</html>

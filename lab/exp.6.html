@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payroll Processing System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            margin: 0;
+        }
+
+        header {
+            background: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 25px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px #ccc;
+        }
+
+        h2 {
+            color: #1f4e79;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #1f4e79;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #163a5a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #1f4e79;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .result {
+            background: #eaf3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .amount {
+            font-weight: bold;
+            color: #1f4e79;
+        }
+
+        footer {
+            background: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Payroll Processing System</h1>
+    <p>Cloud-Based SaaS Application</p>
+</header>
+
+
+<div class="container">
+
+    <div class="box">
+
+        <h2>Employee Information</h2>
+
+        <input type="text"
+               id="employeeName"
+               placeholder="Employee Name">
+
+        <input type="text"
+               id="employeeID"
+               placeholder="Employee ID">
+
+        <input type="number"
+               id="presentExperience"
+               placeholder="Experience in Present Organization">
+
+        <input type="number"
+               id="overallExperience"
+               placeholder="Overall Experience">
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Salary Details</h2>
+
+        <input type="number"
+               id="basicPay"
+               placeholder="Basic Pay">
+
+        <p>
+            <b>HRA:</b> 20% of Basic Pay
+        </p>
+
+        <p>
+            <b>DA:</b> 10% of Basic Pay
+        </p>
+
+        <p>
+            <b>TA:</b> 5% of Basic Pay
+        </p>
+
+        <input type="number"
+               id="deduction"
+               placeholder="Other Deduction">
+
+        <br>
+
+        <button onclick="calculatePayroll()">
+            Process Payroll
+        </button>
+
+        <button onclick="clearData()">
+            Clear
+        </button>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Payroll Result</h2>
+
+        <div class="result">
+
+            <p>
+                <b>Employee Name:</b>
+                <span id="displayName">---</span>
+            </p>
+
+            <p>
+                <b>Employee ID:</b>
+                <span id="displayID">---</span>
+            </p>
+
+            <p>
+                <b>Experience in Present Organization:</b>
+                <span id="displayPresentExp">---</span>
+            </p>
+
+            <p>
+                <b>Overall Experience:</b>
+                <span id="displayOverallExp">---</span>
+            </p>
+
+            <p>
+                <b>Basic Pay:</b>
+                ₹<span id="displayBasic">0</span>
+            </p>
+
+            <p>
+                <b>HRA:</b>
+                ₹<span id="displayHRA">0</span>
+            </p>
+
+            <p>
+                <b>DA:</b>
+                ₹<span id="displayDA">0</span>
+            </p>
+
+            <p>
+                <b>TA:</b>
+                ₹<span id="displayTA">0</span>
+            </p>
+
+            <p>
+                <b>Gross Pay:</b>
+                ₹<span id="displayGross">0</span>
+            </p>
+
+            <p>
+                <b>Other Deduction:</b>
+                ₹<span id="displayDeduction">0</span>
+            </p>
+
+            <p>
+                <b>Net Pay:</b>
+                ₹<span id="displayNet">0</span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Employee Payroll Records</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Employee ID</th>
+                    <th>Present Experience</th>
+                    <th>Overall Experience</th>
+                    <th>Basic Pay</th>
+                    <th>Gross Pay</th>
+                    <th>Net Pay</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="payrollRecords">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<footer>
+    <p>Cloud Payroll Processing System</p>
+</footer>
+
+
+<script>
+
+let payrollRecords = [];
+
+
+function calculatePayroll() {
+
+    let name =
+        document.getElementById("employeeName").value;
+
+    let id =
+        document.getElementById("employeeID").value;
+
+    let presentExp =
+        Number(
+            document.getElementById("presentExperience").value
+        );
+
+    let overallExp =
+        Number(
+            document.getElementById("overallExperience").value
+        );
+
+    let basic =
+        Number(
+            document.getElementById("basicPay").value
+        );
+
+    let deduction =
+        Number(
+            document.getElementById("deduction").value
+        );
+
+
+    if (name === "" ||
+        id === "" ||
+        basic <= 0) {
+
+        alert("Please enter employee name, ID and basic pay.");
+
+        return;
+    }
+
+
+    if (presentExp < 0 ||
+        overallExp < 0 ||
+        deduction < 0) {
+
+        alert("Experience and deduction cannot be negative.");
+
+        return;
+    }
+
+
+    /*
+       Salary Calculation
+
+       HRA = 20% of Basic Pay
+       DA  = 10% of Basic Pay
+       TA  = 5% of Basic Pay
+    */
+
+
+    let hra =
+        basic * 0.20;
+
+    let da =
+        basic * 0.10;
+
+    let ta =
+        basic * 0.05;
+
+
+    let gross =
+        basic + hra + da + ta;
+
+
+    let net =
+        gross - deduction;
+
+
+    if (net < 0) {
+        net = 0;
+    }
+
+
+    document.getElementById("displayName")
+        .innerText = name;
+
+    document.getElementById("displayID")
+        .innerText = id;
+
+    document.getElementById("displayPresentExp")
+        .innerText = presentExp + " years";
+
+    document.getElementById("displayOverallExp")
+        .innerText = overallExp + " years";
+
+    document.getElementById("displayBasic")
+        .innerText = basic.toFixed(2);
+
+    document.getElementById("displayHRA")
+        .innerText = hra.toFixed(2);
+
+    document.getElementById("displayDA")
+        .innerText = da.toFixed(2);
+
+    document.getElementById("displayTA")
+        .innerText = ta.toFixed(2);
+
+    document.getElementById("displayGross")
+        .innerText = gross.toFixed(2);
+
+    document.getElementById("displayDeduction")
+        .innerText = deduction.toFixed(2);
+
+    document.getElementById("displayNet")
+        .innerText = net.toFixed(2);
+
+
+    let employee = {
+
+        name: name,
+
+        id: id,
+
+        presentExp: presentExp,
+
+        overallExp: overallExp,
+
+        basic: basic,
+
+        gross: gross,
+
+        net: net
+    };
+
+
+    payrollRecords.push(employee);
+
+    displayRecords();
+
+    alert("Payroll processed successfully!");
+
+}
+
+
+function displayRecords() {
+
+    let table =
+        document.getElementById("payrollRecords");
+
+    table.innerHTML = "";
+
+
+    payrollRecords.forEach(function(employee) {
+
+        let row =
+            table.insertRow();
+
+
+        row.insertCell(0).innerText =
+            employee.name;
+
+        row.insertCell(1).innerText =
+            employee.id;
+
+        row.insertCell(2).innerText =
+            employee.presentExp + " years";
+
+        row.insertCell(3).innerText =
+            employee.overallExp + " years";
+
+        row.insertCell(4).innerText =
+            "₹" + employee.basic.toFixed(2);
+
+        row.insertCell(5).innerText =
+            "₹" + employee.gross.toFixed(2);
+
+        row.insertCell(6).innerText =
+            "₹" + employee.net.toFixed(2);
+
+    });
+}
+
+
+function clearData() {
+
+    document.getElementById("employeeName").value = "";
+
+    document.getElementById("employeeID").value = "";
+
+    document.getElementById("presentExperience").value = "";
+
+    document.getElementById("overallExperience").value = "";
+
+    document.getElementById("basicPay").value = "";
+
+    document.getElementById("deduction").value = "";
+
+
+    document.getElementById("displayName")
+        .innerText = "---";
+
+    document.getElementById("displayID")
+        .innerText = "---";
+
+    document.getElementById("displayPresentExp")
+        .innerText = "---";
+
+    document.getElementById("displayOverallExp")
+        .innerText = "---";
+
+    document.getElementById("displayBasic")
+        .innerText = "0";
+
+    document.getElementById("displayHRA")
+        .innerText = "0";
+
+    document.getElementById("displayDA")
+        .innerText = "0";
+
+    document.getElementById("displayTA")
+        .innerText = "0";
+
+    document.getElementById("displayGross")
+        .innerText = "0";
+
+    document.getElementById("displayDeduction")
+        .innerText = "0";
+
+    document.getElementById("displayNet")
+        .innerText = "0";
+}
+
+</script>
+
+</body>
+</html>

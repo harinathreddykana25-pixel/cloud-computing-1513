@@ -1,0 +1,300 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chennai Property Buying & Rental System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            margin: 0;
+        }
+
+        .header {
+            background: #1565c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 850px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .radio {
+            display: flex;
+            gap: 25px;
+            margin-top: 10px;
+        }
+
+        .radio label {
+            font-weight: normal;
+        }
+
+        .radio input {
+            width: auto;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d47a1;
+        }
+
+        #result {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🏠 Chennai Property Portal</h1>
+    <p>Cloud-Based Property Buying & Rental SaaS</p>
+</div>
+
+<div class="container">
+
+    <h2>Property Search</h2>
+
+    <label>Process</label>
+
+    <div class="radio">
+        <label>
+            <input type="radio" name="process" value="Buy" checked>
+            Buy
+        </label>
+
+        <label>
+            <input type="radio" name="process" value="Rent">
+            Rent
+        </label>
+    </div>
+
+    <label>Property Type</label>
+    <select id="propertyType">
+        <option value="Residential">Residential</option>
+        <option value="Commercial">Commercial</option>
+    </select>
+
+    <label>Property Category</label>
+    <select id="category">
+        <option>Apartment</option>
+        <option>Independent House</option>
+        <option>Villa</option>
+        <option>Plot</option>
+        <option>Office</option>
+        <option>Shop</option>
+        <option>Warehouse</option>
+    </select>
+
+    <label>Area / Location</label>
+    <input type="text" id="area"
+           placeholder="Example: Anna Nagar">
+
+    <label>Place / Locality</label>
+    <select id="place">
+        <option>Anna Nagar</option>
+        <option>Adyar</option>
+        <option>Velachery</option>
+        <option>Tambaram</option>
+        <option>Porur</option>
+        <option>OMR</option>
+        <option>Guindy</option>
+        <option>T. Nagar</option>
+        <option>Sholinganallur</option>
+    </select>
+
+    <label>Budget / Range</label>
+    <select id="range">
+        <option>Below ₹20 Lakhs</option>
+        <option>₹20 - ₹50 Lakhs</option>
+        <option>₹50 Lakhs - ₹1 Crore</option>
+        <option>₹1 - ₹2 Crores</option>
+        <option>Above ₹2 Crores</option>
+    </select>
+
+    <label>Property Value</label>
+    <input type="number" id="value"
+           placeholder="Enter property value in ₹">
+
+    <label>Area Size (sq.ft)</label>
+    <input type="number" id="size"
+           placeholder="Example: 1200">
+
+    <label>Rental Agreement</label>
+    <select id="agreement">
+        <option>Not Required</option>
+        <option>11 Months</option>
+        <option>1 Year</option>
+        <option>2 Years</option>
+        <option>3 Years</option>
+    </select>
+
+    <label>Number of Bedrooms</label>
+    <select id="bedrooms">
+        <option>1 BHK</option>
+        <option>2 BHK</option>
+        <option>3 BHK</option>
+        <option>4 BHK</option>
+        <option>5+ BHK</option>
+    </select>
+
+    <label>Contact Name</label>
+    <input type="text" id="name"
+           placeholder="Enter your name">
+
+    <label>Contact Number</label>
+    <input type="tel" id="phone"
+           placeholder="Enter phone number">
+
+    <button onclick="searchProperty()">
+        Search Property
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function searchProperty() {
+
+    var process =
+        document.querySelector(
+            'input[name="process"]:checked'
+        ).value;
+
+    var propertyType =
+        document.getElementById("propertyType").value;
+
+    var category =
+        document.getElementById("category").value;
+
+    var area =
+        document.getElementById("area").value;
+
+    var place =
+        document.getElementById("place").value;
+
+    var range =
+        document.getElementById("range").value;
+
+    var value =
+        document.getElementById("value").value;
+
+    var size =
+        document.getElementById("size").value;
+
+    var agreement =
+        document.getElementById("agreement").value;
+
+    var bedrooms =
+        document.getElementById("bedrooms").value;
+
+    var name =
+        document.getElementById("name").value;
+
+    var phone =
+        document.getElementById("phone").value;
+
+    if (area == "" || value == "" || size == "") {
+        alert("Please enter Area, Property Value and Area Size.");
+        return;
+    }
+
+    var result =
+        document.getElementById("result");
+
+    result.style.display = "block";
+
+    result.innerHTML =
+        "<h2>Property Search Result</h2>" +
+
+        "<p><b>Process:</b> " +
+        process + "</p>" +
+
+        "<p><b>Property Type:</b> " +
+        propertyType + "</p>" +
+
+        "<p><b>Category:</b> " +
+        category + "</p>" +
+
+        "<p><b>Area:</b> " +
+        area + "</p>" +
+
+        "<p><b>Place:</b> " +
+        place + "</p>" +
+
+        "<p><b>Budget Range:</b> " +
+        range + "</p>" +
+
+        "<p><b>Property Value:</b> ₹" +
+        value + "</p>" +
+
+        "<p><b>Area Size:</b> " +
+        size + " sq.ft</p>" +
+
+        "<p><b>Rental Agreement:</b> " +
+        agreement + "</p>" +
+
+        "<p><b>Bedrooms:</b> " +
+        bedrooms + "</p>" +
+
+        "<p><b>Customer Name:</b> " +
+        name + "</p>" +
+
+        "<p><b>Contact:</b> " +
+        phone + "</p>" +
+
+        "<hr>" +
+
+        "<h3>Property Search Completed Successfully!</h3>";
+}
+
+</script>
+
+</body>
+</html>
+```

@@ -1,0 +1,203 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Flight Reservation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e8f0fe;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #1565c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        .trip {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 12px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            display: inline;
+        }
+
+        .radio-group input {
+            width: auto;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d47a1;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>✈ Flight Reservation System</h1>
+    <p>Cloud-Based SaaS Application</p>
+</div>
+
+<div class="container">
+
+    <h2>Search Flights</h2>
+
+    <div class="trip">
+        <label>Trip Type</label>
+
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="trip" value="One Way" checked>
+                One Way
+            </label>
+
+            <label>
+                <input type="radio" name="trip" value="Round Trip">
+                Round Trip
+            </label>
+        </div>
+    </div>
+
+    <label>Flight Type</label>
+    <select id="flightType">
+        <option value="Domestic">Domestic Flight</option>
+        <option value="International">International Flight</option>
+    </select>
+
+    <label>From</label>
+    <input type="text" id="from" placeholder="Enter departure city">
+
+    <label>To</label>
+    <input type="text" id="to" placeholder="Enter destination city">
+
+    <label>Departure Date</label>
+    <input type="date" id="departure">
+
+    <label>Return Date</label>
+    <input type="date" id="returnDate">
+
+    <label>Travelers & Class</label>
+    <select id="travelers">
+        <option>1 Traveler - Economy</option>
+        <option>2 Travelers - Economy</option>
+        <option>3 Travelers - Economy</option>
+        <option>4 Travelers - Economy</option>
+        <option>1 Traveler - Business</option>
+        <option>2 Travelers - Business</option>
+        <option>1 Traveler - First Class</option>
+    </select>
+
+    <label>Fare Type</label>
+    <select id="fare">
+        <option>Regular Fare</option>
+        <option>Student Fare</option>
+        <option>Senior Citizen Fare</option>
+        <option>Armed Forces Fare</option>
+    </select>
+
+    <button onclick="searchFlight()">Search Flights</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+function searchFlight() {
+
+    var trip = document.querySelector('input[name="trip"]:checked').value;
+    var flightType = document.getElementById("flightType").value;
+    var from = document.getElementById("from").value;
+    var to = document.getElementById("to").value;
+    var departure = document.getElementById("departure").value;
+    var returnDate = document.getElementById("returnDate").value;
+    var travelers = document.getElementById("travelers").value;
+    var fare = document.getElementById("fare").value;
+
+    if (from == "" || to == "" || departure == "") {
+        alert("Please enter From, To and Departure Date.");
+        return;
+    }
+
+    var result = document.getElementById("result");
+
+    result.style.display = "block";
+
+    result.innerHTML =
+        "<h3>Flight Search Details</h3>" +
+        "<p><b>Trip Type:</b> " + trip + "</p>" +
+        "<p><b>Flight Type:</b> " + flightType + "</p>" +
+        "<p><b>From:</b> " + from + "</p>" +
+        "<p><b>To:</b> " + to + "</p>" +
+        "<p><b>Departure:</b> " + departure + "</p>" +
+        "<p><b>Return:</b> " + (returnDate || "Not Required") + "</p>" +
+        "<p><b>Travelers & Class:</b> " + travelers + "</p>" +
+        "<p><b>Fare Type:</b> " + fare + "</p>" +
+        "<hr>" +
+        "<h3>Flights Found Successfully!</h3>";
+}
+</script>
+
+</body>
+</html>
+```

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f2f5f9;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background: #172554;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav button {
+            background: white;
+            color: #172554;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        nav button:hover {
+            background: #bfdbfe;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 25px auto;
+        }
+
+        .section {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ccc;
+        }
+
+        .active {
+            display: block;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            padding: 25px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        .blue {
+            background: #2563eb;
+        }
+
+        .green {
+            background: #16a34a;
+        }
+
+        .red {
+            background: #dc2626;
+        }
+
+        .orange {
+            background: #ea580c;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .full {
+            grid-column: 1 / 3;
+        }
+
+        .submit-btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #2563eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        .present {
+            color: green;
+            font-weight: bold;
+        }
+
+        .absent {
+            color: red;
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: #fef3c7;
+        }
+
+        footer {
+            margin-top: 30px;
+            background: #172554;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        @media(max-width: 800px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Student Attendance Management System</h1>
+    <p>Cloud-Based SaaS Application</p>
+</header>
+
+<nav>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+    <button onclick="showSection('students')">Students</button>
+    <button onclick="showSection('attendance')">Attendance</button>
+    <button onclick="showSection('od')">OD Request</button>
+    <button onclick="showSection('reports')">Reports</button>
+</nav>
+
+<div class="container">
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="section active">
+
+        <h2>Dashboard</h2>
+
+        <div class="dashboard">
+
+            <div class="card blue">
+                <h3>Total Students</h3>
+                <p id="totalStudents">4</p>
+            </div>
+
+            <div class="card green">
+                <h3>Present Today</h3>
+                <p id="presentToday">3</p>
+            </div>
+
+            <div class="card red">
+                <h3>Absent Today</h3>
+                <p id="absentToday">1</p>
+            </div>
+
+            <div class="card orange">
+                <h3>OD Requests</h3>
+                <p id="odCount">2</p>
+            </div>
+
+        </div>
+
+        <h2>System Features</h2>
+
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>Description</th>
+            </tr>
+
+            <tr>
+                <td>Student Management</td>
+                <td>Add and manage student information</td>
+            </tr>
+
+            <tr>
+                <td>Attendance</td>
+                <td>Mark Present or Absent</td>
+            </tr>
+
+            <tr>
+                <td>OD Request</td>
+                <td>Submit and manage On Duty requests</td>
+            </tr>
+
+            <tr>
+                <td>Attendance Percentage</td>
+                <td>Automatically calculate percentage</td>
+            </tr>
+
+            <tr>
+                <td>Grade</td>
+                <td>Display attendance grade</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <!-- Students -->
+    <div id="students" class="section">
+
+        <h2>Student Information</h2>
+
+        <form onsubmit="addStudent(event)">
+
+            <input type="text" id="studentName"
+                   placeholder="Student Name" required>
+
+            <input type="text" id="regNo"
+                   placeholder="Register Number" required>
+
+            <select id="course" required>
+                <option value="">Select Course</option>
+                <option>BCA</option>
+                <option>B.Sc Computer Science</option>
+                <option>B.Tech Information Technology</option>
+                <option>B.Sc AI & DS</option>
+            </select>
+
+            <select id="semester" required>
+                <option value="">Select Semester</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
+
+            <button class="submit-btn full" type="submit">
+                Add Student
+            </button>
+
+        </form>
+
+        <table id="studentTable">
+
+            <tr>
+                <th>Reg No</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Semester</th>
+            </tr>
+
+            <tr>
+                <td>101</td>
+                <td>Arun</td>
+                <td>BCA</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>102</td>
+                <td>Ravi</td>
+                <td>BCA</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>103</td>
+                <td>Priya</td>
+                <td>BCA</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>104</td>
+                <td>Kumar</td>
+                <td>BCA</td>
+                <td>5</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- Attendance -->
+    <div id="attendance" class="section">
+
+        <h2>Mark Attendance</h2>
+
+        <form onsubmit="markAttendance(event)">
+
+            <select id="attendanceStudent" required>
+                <option value="">Select Student</option>
+                <option>101 - Arun</option>
+                <option>102 - Ravi</option>
+                <option>103 - Priya</option>
+                <option>104 - Kumar</option>
+            </select>
+
+            <select id="subject" required>
+                <option value="">Select Subject</option>
+                <option>Cloud Computing</option>
+                <option>Computer Networks</option>
+                <option>Operating System</option>
+                <option>Compiler Design</option>
+            </select>
+
+            <input type="date" id="attendanceDate" required>
+
+            <select id="attendanceStatus" required>
+                <option value="">Attendance Status</option>
+                <option>Present</option>
+                <option>Absent</option>
+            </select>
+
+            <button class="submit-btn full" type="submit">
+                Mark Attendance
+            </button>
+
+        </form>
+
+        <table id="attendanceTable">
+
+            <tr>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>Arun</td>
+                <td>Cloud Computing</td>
+                <td>05-10-2026</td>
+                <td class="present">Present</td>
+            </tr>
+
+            <tr>
+                <td>Ravi</td>
+                <td>Cloud Computing</td>
+                <td>05-10-2026</td>
+                <td class="present">Present</td>
+            </tr>
+
+            <tr>
+                <td>Kumar</td>
+                <td>Cloud Computing</td>
+                <td>05-10-2026</td>
+                <td class="absent">Absent</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- OD -->
+    <div id="od" class="section">
+
+        <h2>OD Request</h2>
+
+        <form onsubmit="submitOD(event)">
+
+            <select id="odStudent" required>
+                <option value="">Select Student</option>
+                <option>101 - Arun</option>
+                <option>102 - Ravi</option>
+                <option>103 - Priya</option>
+                <option>104 - Kumar</option>
+            </select>
+
+            <input type="date" id="odDate" required>
+
+            <input type="text" id="odReason"
+                   placeholder="OD Reason" required>
+
+            <select id="odStatus">
+                <option>Pending</option>
+                <option>Approved</option>
+                <option>Rejected</option>
+            </select>
+
+            <button class="submit-btn full" type="submit">
+                Submit OD Request
+            </button>
+
+        </form>
+
+        <table id="odTable">
+
+            <tr>
+                <th>Student</th>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>Arun</td>
+                <td>05-10-2026</td>
+                <td>College Event</td>
+                <td><span class="status">Pending</span></td>
+            </tr>
+
+            <tr>
+                <td>Priya</td>
+                <td>04-10-2026</td>
+                <td>Sports Event</td>
+                <td><span class="status">Approved</span></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- Reports -->
+    <div id="reports" class="section">
+
+        <h2>Attendance Reports</h2>
+
+        <table>
+
+            <tr>
+                <th>Reg No</th>
+                <th>Student Name</th>
+                <th>Course</th>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Total Classes</th>
+                <th>Attendance %</th>
+                <th>Grade</th>
+            </tr>
+
+            <tr>
+                <td>101</td>
+                <td>Arun</td>
+                <td>BCA</td>
+                <td>45</td>
+                <td>5</td>
+                <td>50</td>
+                <td>90%</td>
+                <td>A</td>
+            </tr>
+
+            <tr>
+                <td>102</td>
+                <td>Ravi</td>
+                <td>BCA</td>
+                <td>42</td>
+                <td>8</td>
+                <td>50</td>
+                <td>84%</td>
+                <td>B</td>
+            </tr>
+
+            <tr>
+                <td>103</td>
+                <td>Priya</td>
+                <td>BCA</td>
+                <td>48</td>
+                <td>2</td>
+                <td>50</td>
+                <td>96%</td>
+                <td>A+</td>
+            </tr>
+
+            <tr>
+                <td>104</td>
+                <td>Kumar</td>
+                <td>BCA</td>
+                <td>36</td>
+                <td>14</td>
+                <td>50</td>
+                <td>72%</td>
+                <td>C</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>Cloud-Based Student Attendance Management System | SaaS</p>
+</footer>
+
+<script>
+
+function showSection(sectionId) {
+
+    let sections = document.querySelectorAll(".section");
+
+    sections.forEach(function(section) {
+        section.classList.remove("active");
+    });
+
+    document.getElementById(sectionId).classList.add("active");
+}
+
+function addStudent(event) {
+
+    event.preventDefault();
+
+    let name = document.getElementById("studentName").value;
+    let reg = document.getElementById("regNo").value;
+    let course = document.getElementById("course").value;
+    let semester = document.getElementById("semester").value;
+
+    let table = document.getElementById("studentTable");
+
+    let row = table.insertRow();
+
+    row.insertCell(0).innerHTML = reg;
+    row.insertCell(1).innerHTML = name;
+    row.insertCell(2).innerHTML = course;
+    row.insertCell(3).innerHTML = semester;
+
+    let total = document.getElementById("totalStudents");
+
+    total.innerHTML = parseInt(total.innerHTML) + 1;
+
+    alert("Student added successfully!");
+
+    event.target.reset();
+}
+
+function markAttendance(event) {
+
+    event.preventDefault();
+
+    let student = document.getElementById("attendanceStudent").value;
+    let subject = document.getElementById("subject").value;
+    let date = document.getElementById("attendanceDate").value;
+    let status = document.getElementById("attendanceStatus").value;
+
+    let table = document.getElementById("attendanceTable");
+
+    let row = table.insertRow();
+
+    row.insertCell(0).innerHTML = student;
+    row.insertCell(1).innerHTML = subject;
+    row.insertCell(2).innerHTML = date;
+
+    let statusCell = row.insertCell(3);
+
+    statusCell.innerHTML = status;
+
+    if(status == "Present") {
+        statusCell.className = "present";
+    } else {
+        statusCell.className = "absent";
+    }
+
+    if(status == "Present") {
+
+        let present = document.getElementById("presentToday");
+
+        present.innerHTML = parseInt(present.innerHTML) + 1;
+
+    } else {
+
+        let absent = document.getElementById("absentToday");
+
+        absent.innerHTML = parseInt(absent.innerHTML) + 1;
+    }
+
+    alert("Attendance marked successfully!");
+
+    event.target.reset();
+}
+
+function submitOD(event) {
+
+    event.preventDefault();
+
+    let student = document.getElementById("odStudent").value;
+    let date = document.getElementById("odDate").value;
+    let reason = document.getElementById("odReason").value;
+    let status = document.getElementById("odStatus").value;
+
+    let table = document.getElementById("odTable");
+
+    let row = table.insertRow();
+
+    row.insertCell(0).innerHTML = student;
+    row.insertCell(1).innerHTML = date;
+    row.insertCell(2).innerHTML = reason;
+
+    let statusCell = row.insertCell(3);
+
+    statusCell.innerHTML = "<span class='status'>" + status + "</span>";
+
+    let count = document.getElementById("odCount");
+
+    count.innerHTML = parseInt(count.innerHTML) + 1;
+
+    alert("OD request submitted successfully!");
+
+    event.target.reset();
+}
+
+</script>
+
+</body>
+</html>

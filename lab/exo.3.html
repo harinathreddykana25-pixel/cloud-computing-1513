@@ -1,0 +1,291 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Booking Reservation System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            margin: 0;
+        }
+
+        .header {
+            background: #1565c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 850px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px gray;
+        }
+
+        h2 {
+            color: #1565c0;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .booking-type {
+            display: flex;
+            gap: 25px;
+            margin-top: 10px;
+        }
+
+        .booking-type label {
+            font-weight: normal;
+        }
+
+        .booking-type input {
+            width: auto;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d47a1;
+        }
+
+        #result {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🚕 Car Booking Reservation System</h1>
+    <p>Cloud-Based SaaS Application</p>
+</div>
+
+<div class="container">
+
+    <h2>Search for Cabs</h2>
+
+    <label>Booking Type</label>
+
+    <div class="booking-type">
+
+        <label>
+            <input type="radio" name="booking" value="Rental" checked>
+            Rental
+        </label>
+
+        <label>
+            <input type="radio" name="booking" value="Out Station">
+            Out Station
+        </label>
+
+    </div>
+
+    <label>From</label>
+    <input type="text" id="from"
+           placeholder="Enter pickup location">
+
+    <label>To</label>
+    <input type="text" id="to"
+           placeholder="Enter destination">
+
+    <label>Package Type</label>
+
+    <select id="package">
+        <option value="Hourly Package">Hourly Package</option>
+        <option value="Full Day Package">Full Day Package</option>
+        <option value="Out Station Package">Out Station Package</option>
+        <option value="Airport Package">Airport Package</option>
+    </select>
+
+    <label>Hours / Days</label>
+
+    <select id="duration">
+        <option>4 Hours</option>
+        <option>6 Hours</option>
+        <option>8 Hours</option>
+        <option>12 Hours</option>
+        <option>1 Day</option>
+        <option>2 Days</option>
+        <option>3 Days</option>
+        <option>5 Days</option>
+        <option>7 Days</option>
+    </select>
+
+    <label>Car Type</label>
+
+    <select id="car">
+        <option>Sedan</option>
+        <option>SUV</option>
+        <option>Hatchback</option>
+        <option>Luxury Car</option>
+        <option>Tempo Traveller</option>
+    </select>
+
+    <label>Pickup Date</label>
+    <input type="date" id="date">
+
+    <label>Pickup Time</label>
+    <input type="time" id="time">
+
+    <label>Number of Passengers</label>
+
+    <select id="passengers">
+        <option>1 Passenger</option>
+        <option>2 Passengers</option>
+        <option>3 Passengers</option>
+        <option>4 Passengers</option>
+        <option>5 Passengers</option>
+        <option>6 Passengers</option>
+        <option>7+ Passengers</option>
+    </select>
+
+    <label>Customer Name</label>
+    <input type="text" id="name"
+           placeholder="Enter your name">
+
+    <label>Mobile Number</label>
+    <input type="tel" id="phone"
+           placeholder="Enter mobile number">
+
+    <button onclick="searchCab()">
+        Search Cabs
+    </button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function searchCab() {
+
+    var booking =
+        document.querySelector(
+            'input[name="booking"]:checked'
+        ).value;
+
+    var from =
+        document.getElementById("from").value;
+
+    var to =
+        document.getElementById("to").value;
+
+    var packageType =
+        document.getElementById("package").value;
+
+    var duration =
+        document.getElementById("duration").value;
+
+    var car =
+        document.getElementById("car").value;
+
+    var date =
+        document.getElementById("date").value;
+
+    var time =
+        document.getElementById("time").value;
+
+    var passengers =
+        document.getElementById("passengers").value;
+
+    var name =
+        document.getElementById("name").value;
+
+    var phone =
+        document.getElementById("phone").value;
+
+    if (from == "" || to == "" || date == "") {
+
+        alert("Please enter From, To and Pickup Date.");
+
+        return;
+    }
+
+    var result =
+        document.getElementById("result");
+
+    result.style.display = "block";
+
+    result.innerHTML =
+
+        "<h2>Cab Booking Details</h2>" +
+
+        "<p><b>Booking Type:</b> " +
+        booking + "</p>" +
+
+        "<p><b>From:</b> " +
+        from + "</p>" +
+
+        "<p><b>To:</b> " +
+        to + "</p>" +
+
+        "<p><b>Package Type:</b> " +
+        packageType + "</p>" +
+
+        "<p><b>Duration:</b> " +
+        duration + "</p>" +
+
+        "<p><b>Car Type:</b> " +
+        car + "</p>" +
+
+        "<p><b>Pickup Date:</b> " +
+        date + "</p>" +
+
+        "<p><b>Pickup Time:</b> " +
+        time + "</p>" +
+
+        "<p><b>Passengers:</b> " +
+        passengers + "</p>" +
+
+        "<p><b>Customer Name:</b> " +
+        name + "</p>" +
+
+        "<p><b>Mobile Number:</b> " +
+        phone + "</p>" +
+
+        "<hr>" +
+
+        "<h3>✓ Cabs Found Successfully!</h3>" +
+
+        "<p>Your cab booking request has been submitted.</p>";
+}
+
+</script>
+
+</body>
+</html>
+```
